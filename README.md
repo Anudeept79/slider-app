@@ -1,5 +1,7 @@
 # Visual Contrast — Before & After Slider
 
+**[🚀 Live Demo → slider-app-six-gamma.vercel.app](https://slider-app-six-gamma.vercel.app)**
+
 A production-ready before/after image comparison tool built with React, TypeScript, and Tailwind CSS. Upload two images, compare them with a smooth interactive slider, and export the reveal as a video file directly from the browser — no backend required.
 
 ---
