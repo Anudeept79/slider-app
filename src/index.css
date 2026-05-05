@@ -1,0 +1,204 @@
+@import "tailwindcss";
+
+/* ── Static Tailwind tokens (don't change with theme) ──────────────────── */
+@theme {
+  --color-primary:       #8b5cf6;
+  --color-primary-hover: #7c3aed;
+  --font-sans: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   THEME VARIABLES
+   Dark mode is default (:root). Light mode overrides via [data-theme="light"]
+   All component styles reference these — one place to change everything.
+══════════════════════════════════════════════════════════════════════════ */
+:root {
+  color-scheme: dark;
+
+  /* Backgrounds */
+  --col-bg:           #0a0a0a;
+  --col-surface:      #111111;
+  --col-surface-2:    #141414;
+  --col-surface-3:    #1c1c1c;
+
+  /* Text */
+  --col-text-1:       rgba(255, 255, 255, 0.96);
+  --col-text-2:       rgba(255, 255, 255, 0.52);
+  --col-text-3:       rgba(255, 255, 255, 0.28);
+  --col-text-4:       rgba(255, 255, 255, 0.15);
+
+  /* Borders */
+  --col-border:       rgba(255, 255, 255, 0.11);
+  --col-border-sub:   rgba(255, 255, 255, 0.06);
+
+  /* Ghost interactive */
+  --col-ghost-bg:         rgba(255, 255, 255, 0.07);
+  --col-ghost-bg-hover:   rgba(255, 255, 255, 0.11);
+  --col-ghost-text:       rgba(255, 255, 255, 0.72);
+  --col-ghost-text-hover: rgba(255, 255, 255, 0.93);
+
+  /* Upload zone */
+  --col-upload-bg:       #141414;
+  --col-upload-bg-hover: #1c1c1c;
+
+  /* Misc surfaces */
+  --col-controls:     #111111;
+  --col-empty:        #0d0d0d;
+  --col-dot:          rgba(255, 255, 255, 0.06);
+  --col-track:        rgba(255, 255, 255, 0.08);
+
+  /* Badge */
+  --col-badge-bg:     rgba(139, 92, 246, 0.10);
+  --col-badge-border: rgba(139, 92, 246, 0.22);
+  --col-badge-text:   rgba(139, 92, 246, 0.85);
+
+  /* Ambient glow intensity */
+  --glow-opacity: 0.09;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --col-bg:           #f4f4f5;
+  --col-surface:      #ffffff;
+  --col-surface-2:    #fafafa;
+  --col-surface-3:    #f0f0f0;
+
+  --col-text-1:       rgba(10, 10, 10, 0.94);
+  --col-text-2:       rgba(10, 10, 10, 0.50);
+  --col-text-3:       rgba(10, 10, 10, 0.32);
+  --col-text-4:       rgba(10, 10, 10, 0.18);
+
+  --col-border:       rgba(0, 0, 0, 0.11);
+  --col-border-sub:   rgba(0, 0, 0, 0.06);
+
+  --col-ghost-bg:         rgba(0, 0, 0, 0.06);
+  --col-ghost-bg-hover:   rgba(0, 0, 0, 0.10);
+  --col-ghost-text:       rgba(0, 0, 0, 0.64);
+  --col-ghost-text-hover: rgba(0, 0, 0, 0.88);
+
+  --col-upload-bg:       #ffffff;
+  --col-upload-bg-hover: #f5f5f5;
+
+  --col-controls:     #ffffff;
+  --col-empty:        #e8e8e8;
+  --col-dot:          rgba(0, 0, 0, 0.08);
+  --col-track:        rgba(0, 0, 0, 0.10);
+
+  --col-badge-bg:     rgba(139, 92, 246, 0.08);
+  --col-badge-border: rgba(139, 92, 246, 0.20);
+  --col-badge-text:   rgba(109, 60, 230, 0.82);
+
+  --glow-opacity: 0.04;
+}
+
+/* ── Base ──────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--col-bg);
+  color: var(--col-text-1);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Ambient radial glow — intensity controlled by --glow-opacity */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 65vh;
+  background: radial-gradient(
+    ellipse 80% 100% at 50% -5%,
+    rgba(139, 92, 246, var(--glow-opacity)) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.3s ease;
+}
+
+#root { position: relative; z-index: 1; }
+
+/* ── Scrollbar ─────────────────────────────────────────────────────────── */
+::-webkit-scrollbar        { width: 5px; height: 5px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: var(--col-ghost-bg); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--col-ghost-bg-hover); }
+
+/* ── Framer button system ──────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.15s ease, color 0.15s ease,
+              opacity 0.15s ease, box-shadow 0.15s ease;
+}
+.btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn-ghost {
+  background: var(--col-ghost-bg);
+  color:      var(--col-ghost-text);
+}
+.btn-ghost:hover:not(:disabled) {
+  background: var(--col-ghost-bg-hover);
+  color:      var(--col-ghost-text-hover);
+}
+.btn-ghost:active:not(:disabled) { opacity: 0.82; }
+
+.btn-primary {
+  background:  #8b5cf6;
+  color:       #ffffff;
+  box-shadow:  inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+.btn-primary:hover:not(:disabled)  { background: #7c3aed; }
+.btn-primary:active:not(:disabled) { background: #6d28d9; box-shadow: none; }
+
+.btn-danger {
+  background: rgba(239, 68, 68, 0.82);
+  color:      #ffffff;
+}
+.btn-danger:hover:not(:disabled) { background: rgba(239, 68, 68, 0.95); }
+
+/* Icon-only square variant */
+.btn-icon {
+  width: 34px;
+  padding: 0;
+  justify-content: center;
+}
+
+/* ── Upload zone ───────────────────────────────────────────────────────── */
+.upload-zone {
+  background:    var(--col-upload-bg);
+  border:        1px solid var(--col-border);
+  border-radius: 10px;
+  overflow:      hidden;
+  cursor:        pointer;
+  position:      relative;
+  transition:    background-color 0.2s ease, border-color 0.2s ease;
+}
+.upload-zone:hover               { background: var(--col-upload-bg-hover); }
+.upload-zone.has-image:hover     { background: var(--col-upload-bg); }
+.upload-zone.drag-over {
+  background:  rgba(139, 92, 246, 0.07);
+  border-color: rgba(139, 92, 246, 0.45);
+}
